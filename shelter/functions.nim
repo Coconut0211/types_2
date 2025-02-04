@@ -23,29 +23,32 @@ template setAttrValue*(obj,attr,value,checkFunc) =
   if checkFunc(value):
     obj.attr = value
 
-proc setBirthdate*(self:Staff,value: string) =
-  self.birthDate = value.toUnix()
+template setBirthdate*(obj,attr,value) =
+  obj.attr = value.toUnix()
 
-proc setManagerPost*(self: Manager, data: string) =
+proc setManagerDol*(self: Manager, data: string, glavnVal: bool) =
   try:
-    self.post = parseEnum[Post](data)
+    self.post.dol = parseEnum[Dol](data)
+    self.post.glavn = glavnVal
   except ValueError:
     stderr.write("Нет должности $1\n" % data)
-    self.post = NONE
+    self.post.dol = NONE
+    self.post.glavn = false
 
 
-template initManager*(varName; firstnameval, lastnameval,postval: string) =
+template initManager*(varName; firstnameval: string, lastnameval: string, dolval: string, birthDateval: string, glavnval: bool) =
   let varName = Manager()
   varName.setAttrValue(firstname,firstnameval,checkStr)
   varName.setAttrValue(lastname,lastnameval,checkStr)
-  varName.setManagerPost(postval)
+  varName.setManagerDol(dolval,glavnval)
+  varName.setBirthdate(birthDate,birthDateval)
 
 template initStaff*(varName; firstnameval: string, lastnameval: string, birthDateval: string,uidval:int) =
   let varName = Staff()
   varName.setAttrValue(firstname,firstnameval,checkStr)
   varName.setAttrValue(lastname,lastnameval,checkStr)
   varName.setAttrValue(uid,uidval,checkDigit)
-  varName.setBirthdate(birthDateval)
+  varName.setBirthdate(birthDate,birthDateval)
 
 template initPet*(varName; nameval:string, ageval:int) =
   let varName = Pet()
@@ -53,10 +56,15 @@ template initPet*(varName; nameval:string, ageval:int) =
   varName.setAttrValue(age,ageval,checkDigit)
 
 proc `$`*(self: Manager): string = 
-  "$1: $2 $3" % [
-  $self.getAttrValue(post),
+  var prep = ""
+  if self.post.glavn:
+    prep = "Главный "
+  "$1$2: $3 $4\nДата рождения: $5" % [
+  prep,
+  $self.getAttrValue(post).dol,
   self.getAttrValue(firstname),
-  self.getAttrValue(lastname)
+  self.getAttrValue(lastname),
+  self.getAttrValue(birthDate).toStr
   ]
 
 proc `$`*(self: Staff): string = 

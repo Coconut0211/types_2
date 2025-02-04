@@ -4,16 +4,19 @@ type
   Director* = ref object of RootObj
     firstname*: string
     lastname*: string
+    birthDate*: int64
   Teacher* = ref object of RootObj
     firstname*: string
     lastname*: string
+    birthDate*: int64
     subject*: Subjects
   Student* = ref object of RootObj
     firstname*: string
     lastname*: string
-    class_num*: int
-    class_let*: char
+    birthDate*: int64
+    classNum*: int
+    classLet*: char
   School* = ref object of RootObj
     director*: Director
-    student*: seq[Student]
-    teacher*: seq[Teacher]
+    students*: seq[Student]
+    teachers*: seq[Teacher]

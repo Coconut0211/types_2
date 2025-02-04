@@ -1,10 +1,14 @@
 type
-  Post* = enum
-    NONE, Директор, Главный_бухгалтер, Главный_ветеринар
+  Dol* = enum
+    NONE, Директор, Бухгалтер, Ветеринар
+  Post* = object
+    dol*: Dol
+    glavn*: bool
   Manager* = ref object of RootObj
     firstname*: string
     lastname*: string
     post*: Post
+    birthDate*: int64
   Staff* = ref object of RootObj
     firstname*: string
     lastname*: string
