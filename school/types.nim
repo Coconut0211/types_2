@@ -1,14 +1,12 @@
 type
   Subjects* = enum
     NONE, История, География, Математика, Биология
-  Director* = ref object of RootObj
+  Person* = ref object of RootObj
     firstname*: string
     lastname*: string
     birthDate*: int64
-  Teacher* = ref object of RootObj
-    firstname*: string
-    lastname*: string
-    birthDate*: int64
+  Director* = ref object of Person
+  Teacher* = ref object of Person
     subject*: Subjects
   Student* = ref object of RootObj
     firstname*: string

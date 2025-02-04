@@ -28,7 +28,7 @@ template setBirthdate*(obj,attr,value) =
 
 proc setManagerDol*(self: Manager, data: string, glavnVal: bool) =
   try:
-    self.post.dol = parseEnum[Dol](data)
+    self.post.dol = parseEnum[Role](data)
     self.post.glavn = glavnVal
   except ValueError:
     stderr.write("Нет должности $1\n" % data)
